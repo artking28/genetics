@@ -16,6 +16,7 @@ type (
 
 	Turno struct {
 		People map[Pessoa]int
+		Novas  int
 	}
 )
 
@@ -54,11 +55,14 @@ func InitIndividuo() Individuo {
 		if out {
 			continue
 		}
+		t.Novas = len(t.People) - commom
 		ret.Content[i] = t
-		ret.CountPeople += len(t.People) - commom
 		lastTurnoPeople0 = lastTurnoPeople1
 		lastTurnoPeople1 = t.People
 		i++
+	}
+	for _, i := range ret.Content {
+		ret.CountPeople += i.Novas
 	}
 	return ret
 }

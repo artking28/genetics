@@ -72,11 +72,15 @@ func (this *Generation) Mutation() {
 			if out {
 				continue
 			}
+			t.Novas = len(t.People) - commom
 			parcial.Content[i] = t
-			parcial.CountPeople += len(t.People) - commom
 			lastTurnoPeople0 = lastTurnoPeople1
 			lastTurnoPeople1 = t.People
 			i++
+		}
+		parcial.CountPeople = 0
+		for _, i := range parcial.Content {
+			parcial.CountPeople += i.Novas
 		}
 		this.All = append(this.All, parcial)
 	}
@@ -93,16 +97,18 @@ func SortFitness(inds []models.Individuo) (ret []models.Individuo) {
 	pivot := inds[rand.Int()%len(inds)]
 	var smaller, greater []models.Individuo
 	for i := 0; i < len(inds)-1; i++ {
-		if inds[i].Calc() > inds[i+1].Calc() {
-			greater = append(greater, inds[i])
+		if inds[i].Calc() < inds[i+1].Calc() {
 			if i+2 == len(inds) {
 				smaller = append(smaller, inds[i+1])
+			} else {
+				greater = append(greater, inds[i])
 			}
 			continue
 		}
-		smaller = append(smaller, inds[i])
 		if i+2 == len(inds) {
 			greater = append(greater, inds[i+1])
+		} else {
+			smaller = append(smaller, inds[i])
 		}
 	}
 	ret = append(ret, SortFitness(smaller)...)
