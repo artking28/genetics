@@ -43,7 +43,7 @@ func (this *Generation) Mutation() {
 		parcial := this.All[rand.Int()%len(this.All)]
 		outter := 0
 		lastTurnoPeople0, lastTurnoPeople1 := map[models.Pessoa]int{}, map[models.Pessoa]int{}
-		for i := 69; i < 90; {
+		for i := (rand.Int()%90 - 2) + 2; i < 90; {
 			t := models.InitTurno()
 
 			out, commom := false, 0
