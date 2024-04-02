@@ -43,7 +43,7 @@ func (this *Generation) Mutation() {
 		parcial := this.All[rand.Int()%len(this.All)]
 		outter := 0
 		lastTurnoPeople0, lastTurnoPeople1 := map[models.Pessoa]int{}, map[models.Pessoa]int{}
-		for i := (rand.Int()%90 - 2) + 2; i < 90; {
+		for i := (rand.Int()%models.IndSize - 2) + 2; i < models.IndSize; {
 			t := models.InitTurno()
 
 			out, commom := false, 0
@@ -87,7 +87,30 @@ func (this *Generation) Mutation() {
 }
 
 func (this *Generation) Crossover() {
-
+	t := len(this.All) - 1
+	for i := 0; i < t/6; i++ {
+		f0 := this.All[i].Content[:]
+		f1 := this.All[i+1].Content[:]
+		for k := models.IndSize - 1; k > 2; k-- {
+			out := false
+			for key := range f0[k].People {
+				if f1[k-2].People[key] == 1 {
+					out = true
+					break
+				}
+			}
+			if out {
+				continue
+			}
+			i0 := models.InitIndividuo()
+			s0 := i0.Content[:]
+			s0 = append(f0[:k], f1[k:]...)
+			_ = s0
+			i0.UpdateCount()
+			this.All = append(this.All, i0)
+			break
+		}
+	}
 }
 
 func SortFitness(inds []models.Individuo) (ret []models.Individuo) {

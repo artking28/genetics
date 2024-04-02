@@ -6,11 +6,11 @@ import (
 )
 
 // IndSize Quantidade de genes em cada indivíduo
-const IndSize = 90
+const IndSize = 8
 
 type (
 	Individuo struct {
-		Content     [IndSize]Turno
+		Content     [8]Turno
 		CountPeople int
 	}
 
@@ -69,6 +69,23 @@ func InitIndividuo() Individuo {
 
 func (this *Individuo) Calc() float64 {
 	return float64((1/this.CountPeople)*10) - float64(this.CountPeople)
+}
+
+func (this *Individuo) UpdateCount() {
+	this.CountPeople = 0
+	for i := 0; i < len(this.Content); i++ {
+		commom := 0
+		if i == 0 {
+			this.CountPeople += len(this.Content[i].People)
+			continue
+		}
+		for key := range this.Content[i].People {
+			if this.Content[i-1].People[key] == 1 {
+				commom++
+			}
+		}
+		this.CountPeople += len(this.Content[i].People) - commom
+	}
 }
 
 // InitTurno - Inicia um turno com preenchimento aleatório
