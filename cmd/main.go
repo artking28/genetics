@@ -18,6 +18,7 @@ func main() {
 		}
 		generation.Mutation()
 		generation.All = geneticsAI.SortFitness(generation.All)
+		generation.Crossover()
 		generation.All = generation.All[:200]
 		if generation.All[0].CountPeople-generation.All[199].CountPeople == 0 {
 			generation.All = append(generation.All[:3], geneticsAI.InitGeneration(200).All[3:]...)
