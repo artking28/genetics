@@ -6,11 +6,11 @@ import (
 )
 
 // IndSize Quantidade de genes em cada indivíduo
-const IndSize = 8
+const IndSize = 90
 
 type (
 	Individuo struct {
-		Content     [8]Turno
+		Content     [90]Turno
 		CountPeople int
 	}
 
